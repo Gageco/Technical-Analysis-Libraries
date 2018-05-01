@@ -1,28 +1,41 @@
 package main
 
 import (
-  "testLibs/RSI"
+  "testLibs/PoloniexInterface"
+  "testLibs/SMA"
   "fmt"
-  "math/rand"
+  "time"
+  // "strconv"
+  // "math/rand"
   // "errors"
 )
 
 func main() {
-
-  s := rsi.RSIndex{}
   var err error
 
-  // fmt.Println(rsi.Test())
-  // fmt.Println(rand.Float64())
+  simpleMA := sma.Periods{}
+  simpleMA = simpleMA.SetLength(20)
 
-  for i:=0;i<15;i++ {
-    s, _ = s.AddPeriod(float64(-i) + rand.Float64())
-  }
+  err = err
+  s := polo.HistoricalPoints{}
+
+  t := time.Now()
+  t2 := t.Add(-24 * 40 * time.Hour)
+
+  // s, _ = s.SetPeriodLength(86400)
+
+  s, err = s.GetHistoricalData(t2, t)
   if err != nil {
     fmt.Println(err)
   }
-  // fmt.Println(s)
-  s, _ = s.CalculateRSI()
 
-  fmt.Println(s)
+  // fmt.Println(s)
+  for i:=0;i<len(s.Points);i++ {
+    simpleMA = simpleMA.AddPrice(s.Points[i].Close)
+    fmt.Println(simpleMA.CalculateSMA())
+  }
+
+
+
+  // fmt.Println(s)
 }

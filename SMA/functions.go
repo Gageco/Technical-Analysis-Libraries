@@ -1,4 +1,11 @@
 package sma
+//****************************************************************************
+// sma stands for Simple Moving Average, its an average stock price over a
+// period of time. it can be used to figure out if a stock is bullish if it is
+// over the sma or bearish if it is under the SMA
+//****************************************************************************
+
+// NOTE FOF FUTURE GAGE, SEE IF YOU CAN WRITE THE LIBRARY SO YOU CAN SET HOW CLOSE YOU WANT THE RELATIBE SMA TO BE BEFORE IT TRIGGERS
 
 import (
   "fmt"
@@ -12,16 +19,16 @@ func Test() string {
   return "hello, world"
 }
 
-func (s Periods) Calculate() float64 {                                          //Calculates the average of all points in Period
+func (s Periods) CalculateSMA() float64 {                                          //Calculates the average of all points in Period
   total := float64(0.00)
   for i:=0; i<len(s.Prices); i++ {
     total += float64(s.Prices[i])
   }
-  average := total/float64(s.Length)
+  average := total/float64(len(s.Prices))
   return average
 }
 
-func (s Periods) AddLength(len int) (Periods) {                                 //Add a length to Period, or just use .Length = on Period var
+func (s Periods) SetLength(len int) (Periods) {                                 //Add a length to Period, or just use .Length = on Period var
   s.Length = len
   return s
 }
@@ -61,14 +68,14 @@ func (s Periods) AddPrice(price float64) (Periods) {                            
 func (rs RelativeSMA) AddRelativeSMA(p1 Periods, p2 Periods) (RelativeSMA) {                  //Add to a RelativeSMA struct and check for crosses
   rs.SMA1 = append(rs.SMA1, p1)
   rs.SMA2 = append(rs.SMA2, p2)
-  rs.Difference = p1.Calculate() - p2.Calculate()
+  rs.Difference = p1.CalculateSMA() - p2.CalculateSMA()
 
 
   //****************************************************************************
   // (p1 - p2)/p2 will give a percentage difference, if this difference is less
   // than 5% than we can say it is approaching a cross. 5% is arbitrary
   //****************************************************************************
-  if math.Abs(rs.Difference/p2.Calculate()) <= .05 {
+  if math.Abs(rs.Difference/p2.CalculateSMA()) <= .05 {
     rs.NearCross = true
   } else {
     rs.NearCross = false
