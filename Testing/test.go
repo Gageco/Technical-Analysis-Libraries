@@ -2,7 +2,7 @@ package main
 
 import (
   "testLibs/PoloniexInterface"
-  "testLibs/SMA"
+  "testLibs/RSI"
   "fmt"
   "time"
   // "strconv"
@@ -13,8 +13,8 @@ import (
 func main() {
   var err error
 
-  simpleMA := sma.Periods{}
-  simpleMA = simpleMA.SetLength(20)
+  RSI := rsi.RSIndex{}
+  RSI = RSI.AddLength(20)
 
   err = err
   s := polo.HistoricalPoints{}
@@ -31,11 +31,9 @@ func main() {
 
   // fmt.Println(s)
   for i:=0;i<len(s.Points);i++ {
-    simpleMA = simpleMA.AddPrice(s.Points[i].Close)
-    fmt.Println(simpleMA.CalculateSMA())
+    RSI, _ = RSI.AddPeriod(s.Points[i].Close)
   }
-
-
+  fmt.Println(RSI.CalculateRSI())
 
   // fmt.Println(s)
 }

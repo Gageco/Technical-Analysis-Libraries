@@ -93,7 +93,7 @@ func (s RSIndex) CalculateRSI() (RSIndex, error) {
     sumPositive += positive[i]
   }
   avgPositive = sumPositive/float64(len(positive))
-  fmt.Println(avgPositive)
+  // fmt.Println(avgPositive)
 
   //****************************************************************************
   // getting negative average
@@ -102,7 +102,7 @@ func (s RSIndex) CalculateRSI() (RSIndex, error) {
     sumNegative += math.Abs(negative[i])
   }
   avgNegative = sumNegative/float64(len(negative))
-  fmt.Println(avgNegative)
+  // fmt.Println(avgNegative)
 
   //****************************************************************************
   // calculating RS, RSI
@@ -134,3 +134,7 @@ func (s RSIndex) CalculateRSI() (RSIndex, error) {
   return s, nil
 
 }
+
+
+   //  the
+   // && ||
